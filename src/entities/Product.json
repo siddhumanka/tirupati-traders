@@ -1,0 +1,60 @@
+{
+  "name": "Product",
+  "type": "object",
+  "properties": {
+    "brand": {
+      "type": "string",
+      "description": "Brand name ( Falcofix, Others)",
+      "enum": [
+        "Falcofix",
+        "Others"
+      ],
+      "default": "Falcofix"
+    },
+    "title": {
+      "type": "string",
+      "description": "Product name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Product description"
+    },
+    "image": {
+      "type": "string",
+      "description": "Product image URL"
+    },
+    "categories": {
+      "type": "string",
+      "description": "Product categories"
+    },
+    "product_id": {
+      "type": "string",
+      "description": "Product SKU/ID"
+    },
+    "price": {
+      "type": "number",
+      "description": "Original price"
+    },
+    "sale_price": {
+      "type": "number",
+      "description": "Sale/discounted price"
+    },
+    "inventory": {
+      "type": "number",
+      "description": "Stock quantity"
+    },
+    "weight": {
+      "type": "number",
+      "description": "Product weight in KG"
+    },
+    "product_type": {
+      "type": "string",
+      "description": "Type of product"
+    }
+  },
+  "required": [
+    "title",
+    "product_id",
+    "price"
+  ]
+}
