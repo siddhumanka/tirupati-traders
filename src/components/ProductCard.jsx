@@ -4,7 +4,7 @@ import { createPageUrl } from '@/utils';
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Phone, MessageCircle, Package } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { translations } from './translations.jsx';
 
@@ -23,8 +23,8 @@ export default function ProductCard({ product, allProducts = [] }) {
     const discount = Math.round(((product.price - product.sale_price) / product.price) * 100);
 
     const formatWeight = (weight) => {
-        if (weight < 1) return `${weight * 1000}g`;
-        return `${weight} KG`;
+        if (weight < 1) return `${weight * 1000}`;
+        return `${weight}`;
     };
 
     // Get all sizes for this product
@@ -33,9 +33,17 @@ export default function ProductCard({ product, allProducts = [] }) {
         ? `${formatWeight(Math.min(...variants.map(v => v.weight)))} - ${formatWeight(Math.max(...variants.map(v => v.weight)))}`
         : formatWeight(product.weight);
 
+    // Guard for sale_price being undefined or not a number
+    const safeLocaleString = (value) => {
+        if (typeof value === 'number' && !isNaN(value)) {
+            return value.toLocaleString('en-IN');
+        }
+        return 'N/A';
+    };
+
     const priceRange = variants.length > 1
-        ? `₹${Math.min(...variants.map(v => v.sale_price)).toLocaleString('en-IN')} - ₹${Math.max(...variants.map(v => v.sale_price)).toLocaleString('en-IN')}`
-        : `₹${product.sale_price.toLocaleString('en-IN')}`;
+        ? `₹${safeLocaleString(Math.min(...variants.map(v => typeof v.sale_price === 'number' ? v.sale_price : Infinity)))} - ₹${safeLocaleString(Math.max(...variants.map(v => typeof v.sale_price === 'number' ? v.sale_price : 0)))}`
+        : `₹${safeLocaleString(product.sale_price)}`;
 
     const whatsappMessage = encodeURIComponent(
         `Hi, I'm interested in ${product.title}. Please share more details.`
@@ -60,7 +68,7 @@ export default function ProductCard({ product, allProducts = [] }) {
                         </div>
                         {variants.length > 1 && (
                             <Badge className="absolute top-4 left-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-3 py-1 rounded-full">
-                                {variants.length} Sizes
+                                {variants.length} Types
                             </Badge>
                         )}
                         {discount > 0 && variants.length === 1 && (
@@ -87,12 +95,12 @@ export default function ProductCard({ product, allProducts = [] }) {
                     </Link>
 
                     <div>
-                        <div className="flex items-center gap-2 mb-2">
-                            <Package className="w-4 h-4 text-slate-400" />
-                            <span className="text-sm text-slate-500 font-medium">
-                                {variants.length > 1 ? `${t.sizes}: ${sizeRange}` : `${t.size}: ${sizeRange}`}
-                            </span>
-                        </div>
+                        {/*<div className="flex items-center gap-2 mb-2">*/}
+                        {/*    <Package className="w-4 h-4 text-slate-400" />*/}
+                        {/*    <span className="text-sm text-slate-500 font-medium">*/}
+                        {/*        {variants.length > 1 ? `${t.sizes}: ${sizeRange}` : `${t.size}: ${sizeRange}`}*/}
+                        {/*    </span>*/}
+                        {/*</div>*/}
                         <div className="flex items-baseline gap-3">
                             <span className="text-2xl font-bold text-slate-900">
                                 {priceRange}
@@ -114,7 +122,7 @@ export default function ProductCard({ product, allProducts = [] }) {
                             className="bg-green-600 hover:bg-green-700 text-white rounded-xl h-11 px-4"
                         >
                             <a
-                                href={`https://wa.me/919422163492?text=${whatsappMessage}`}
+                                href={`https://wa.me/919422163831?text=${whatsappMessage}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >

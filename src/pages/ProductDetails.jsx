@@ -7,7 +7,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import {Button} from "../components/ui/button";
 import {Badge} from "../components/ui/badge";
 import {Card} from "../components/ui/card";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "../components/ui/select";
+import {Select, SelectItem} from "../components/ui/select";
 import {ArrowLeft, CheckCircle, Info, MessageCircle, Package, Phone} from 'lucide-react';
 import {motion} from 'framer-motion';
 import Papa from "papaparse";
@@ -34,12 +34,12 @@ export default function ProductDetails() {
 
     const product = allProducts.find(p => p.product_id === productId);
 
-    // Get all variants (same title, different sizes)
+    // Get all variants (same title, different types)
     const variants = allProducts
         .filter(p => product && p.title === product.title)
         .sort((a, b) => a.weight - b.weight);
 
-    const [selectedSize, setSelectedSize] = useState(productId);
+    const [selectedType, setSelectedType] = useState(productId);
 
     if (isLoading) {
         return <LoadingSpinner/>;
@@ -63,12 +63,12 @@ export default function ProductDetails() {
         );
     }
 
-    const selectedProduct = variants.find(p => p.product_id === selectedSize) || product;
+    const selectedProduct = variants.find(p => p.product_id === selectedType) || product;
     const discount = Math.round(((selectedProduct.price - selectedProduct.sale_price) / selectedProduct.price) * 100);
 
-    const formatWeight = (weight) => {
-        if (weight < 1) return `${weight * 1000}g`;
-        return `${weight} KG`;
+    const formatWeight = (type) => {
+        if (type < 1) return `${type * 1000}`;
+        return `${type}`;
     };
 
     const whatsappMessage = encodeURIComponent(
@@ -141,30 +141,20 @@ export default function ProductDetails() {
                             </div>
                         </div>
 
-                        {/* Size Selector */}
+                        {/* Type Selector */}
                         {variants.length > 1 && (
                             <Card className="p-6 bg-blue-50 border-blue-100">
                                 <label
                                     className="block text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
                                     <Package className="w-4 h-4"/>
-                                    Select Size
+                                    Select Type
                                 </label>
-                                <Select value={selectedSize} onValueChange={setSelectedSize}>
-                                    <SelectTrigger className="w-full bg-white border-blue-200 h-12 text-base">
-                                        <SelectValue/>
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {variants.map((variant) => (
-                                            <SelectItem key={variant.product_id} value={variant.product_id}
-                                                        className="text-base py-3">
-                                                <div className="flex justify-between items-center w-full gap-8">
-                                                    <span className="font-medium">{formatWeight(variant.weight)}</span>
-                                                    <span
-                                                        className="text-slate-600">₹{variant.sale_price.toLocaleString('en-IN')}</span>
-                                                </div>
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
+                                <Select value={selectedType} onValueChange={setSelectedType} className="w-full bg-white border-blue-200 h-12 text-base">
+                                    {variants.map((variant) => (
+                                        <SelectItem key={variant.product_id} value={variant.product_id} className="text-base py-3">
+                                            {formatWeight(variant.weight)} — ₹{typeof variant.sale_price === 'number' ? variant.sale_price.toLocaleString('en-IN') : 'N/A'}
+                                        </SelectItem>
+                                    ))}
                                 </Select>
                             </Card>
                         )}
@@ -177,7 +167,7 @@ export default function ProductDetails() {
                             </h3>
                             <div className="space-y-3">
                                 <div className="flex justify-between py-2 border-b border-slate-100">
-                                    <span className="text-slate-600">Weight</span>
+                                    <span className="text-slate-600">Type</span>
                                     <span className="font-semibold">{formatWeight(selectedProduct.weight)}</span>
                                 </div>
                                 <div className="flex justify-between py-2 border-b border-slate-100">
@@ -245,7 +235,7 @@ export default function ProductDetails() {
                             <div className="space-y-2 text-sm">
                                 <p className="flex items-center gap-2 text-slate-700">
                                     <Phone className="w-4 h-4 text-blue-600"/>
-                                    <a href="tel:+919422163492" className="hover:text-blue-600">+91 94221 63831</a>
+                                    <a href="tel:+919422163492" className="hover:text-blue-600">+91 94221 63492</a>
                                 </p>
                                 <p className="flex items-center gap-2 text-slate-700">
                                     <MessageCircle className="w-4 h-4 text-green-600"/>
@@ -265,22 +255,22 @@ export default function ProductDetails() {
                         className="mt-16"
                     >
                         <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6">
-                            Available Sizes
+                            Available Types
                         </h2>
                         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                             {variants.map((variant) => (
                                 <Card
                                     key={variant.product_id}
-                                    onClick={() => setSelectedSize(variant.product_id)}
+                                    onClick={() => setSelectedType(variant.product_id)}
                                     className={`p-4 cursor-pointer transition-all duration-300 hover:shadow-lg ${
-                                        variant.product_id === selectedSize
+                                        variant.product_id === selectedType
                                             ? 'ring-2 ring-blue-600 bg-blue-50'
                                             : 'hover:bg-slate-50'
                                     }`}
                                 >
                                     <div className="text-center">
                                         <Package className={`w-8 h-8 mx-auto mb-2 ${
-                                            variant.product_id === selectedSize ? 'text-blue-600' : 'text-slate-400'
+                                            variant.product_id === selectedType ? 'text-blue-600' : 'text-slate-400'
                                         }`}/>
                                         <p className="font-bold text-slate-900 mb-1">
                                             {formatWeight(variant.weight)}

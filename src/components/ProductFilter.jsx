@@ -6,16 +6,26 @@ export default function ProductFilter({ activeFilter, setActiveFilter, activeBra
     const brands = [
         { id: 'all', label: 'All Brands' },
         { id: 'Falcofix', label: 'Falcofix' },
+        { id: 'Bluecoat', label: 'Bluecoat' },
     ];
 
-    const filters = activeBrand === 'Falcofix' ? [
-        { id: 'all', label: 'All Products' },
-        { id: 'wr', label: 'Falcofix WR' },
-        { id: 'um', label: 'Ultra Marine' },
-        { id: 'ebs', label: 'Falcofix EBS' },
-        { id: 'wrgold', label: 'WR Gold' },
-        { id: 'others', label: 'Others' }
-    ] : [];
+    const filterOptions = {
+        Falcofix: [
+            { id: 'all', label: 'All Products' },
+            { id: 'wr', label: 'Falcofix WR' },
+            { id: 'um', label: 'Ultra Marine' },
+            { id: 'ebs', label: 'Falcofix EBS' },
+            { id: 'fb', label: 'Falco Bond' },
+            { id: 'wrgold', label: 'WR Gold' },
+        ],
+        Bluecoat: [
+            { id: 'all', label: 'All Products' },
+            { id: 'd3', label: 'Bluecoat D3' },
+            { id: 'marine', label: 'Bluecoat Marine' },
+        ],
+    };
+
+    const filters = filterOptions[activeBrand] || [];
 
     return (
         <div className="space-y-4">

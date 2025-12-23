@@ -13,15 +13,12 @@ const Select = ({ children, value, onValueChange, ...props }) => {
     );
 };
 
-const SelectTrigger = React.forwardRef(({ children, ...props }, ref) => (
-    <select ref={ref} {...props} className="w-full h-12 px-4 rounded-lg border border-slate-300 bg-white text-base focus:outline-none focus:ring-2 focus:ring-blue-500">
-        {children}
-    </select>
-));
-SelectTrigger.displayName = "SelectTrigger";
-
-const SelectValue = ({ placeholder }) => <span>{placeholder}</span>;
-const SelectContent = ({ children }) => <>{children}</>;
+// Only allow <option> as children of <select>
 const SelectItem = ({ value, children }) => <option value={value}>{children}</option>;
 
-export { Select, SelectTrigger, SelectValue, SelectContent, SelectItem };
+// Remove or comment out custom trigger/value/content to avoid invalid nesting
+// const SelectTrigger = ...
+// const SelectValue = ...
+// const SelectContent = ...
+
+export { Select, SelectItem };

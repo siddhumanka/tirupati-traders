@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Phone, Mail, MapPin, Globe } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectItem } from "@/components/ui/select";
 import { translations } from './translations.jsx';
 
 export default function Header() {
@@ -54,16 +54,10 @@ export default function Header() {
                     </div>
 
                     <div className="flex items-center gap-3">
-                        <Select value={language} onValueChange={setLanguage}>
-                            <SelectTrigger className="w-[100px] h-9 border-slate-200">
-                                <Globe className="w-4 h-4 mr-1" />
-                                <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="en">English</SelectItem>
-                                <SelectItem value="hi">हिंदी</SelectItem>
-                                <SelectItem value="mr">मराठी</SelectItem>
-                            </SelectContent>
+                        <Select value={language} onValueChange={setLanguage} className="w-[100px] h-9 border-slate-200">
+                            <SelectItem value="en">English</SelectItem>
+                            <SelectItem value="hi">हिंदी</SelectItem>
+                            <SelectItem value="mr">मराठी</SelectItem>
                         </Select>
 
                         <a
